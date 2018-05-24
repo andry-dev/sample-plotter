@@ -26,22 +26,22 @@
 #include "gsl/assert"
 
 template <typename F>
-constexpr double area_rettangoli(const double divisioni,
-                      double limite_inferiore,
-                      double limite_superiore,
+constexpr double function_area(const double divisions,
+                      double lower_limit,
+                      double upper_limit,
                       F&& fun)
 {
-    if (limite_superiore < limite_inferiore)
+    if (upper_limit < lower_limit)
     {
-        std::swap(limite_inferiore, limite_superiore);
+        std::swap(lower_limit, upper_limit);
     }
 
-    const double deltax = (limite_superiore - limite_inferiore) / divisioni;
+    const double deltax = (upper_limit - lower_limit) / divisions;
 
     double res = 0.0;
-    double curr = limite_inferiore;
+    double curr = lower_limit;
 
-    for (int i = 0; i < divisioni; ++i)
+    for (int i = 0; i < divisions; ++i)
     {
         curr += deltax;
         res += fun(curr);
@@ -314,7 +314,7 @@ void start_plot(Fun&& fun)
 
 int main()
 {
-    std::cout << "Inserire la funzione: ";
+    std::cout << "y = ";
     std::string str;
     std::getline(std::cin, str);
 
@@ -336,29 +336,23 @@ int main()
 
     auto fun = parser::visit(*currnode);
 
-#if 1
-    double x = 0;
-    std::cout << "x: ";
-    std::cin >> x;
-    std::cout << "Res: " << fun(x) << '\n';
-#else
-    double divisioni = 0.0;
+    double divisions = 0.0;
     double a = 0.0;
     double b = 0.0;
 
-    std::cout << "Per la funzione f(x) = " << str << ":\n";
-    std::cout << "Inserire l'intervallo minimo: ";
+    std::cout << "For f(x) = " << str << ":\n";
+    std::cout << "Lower limit: ";
     std::cin >> a;
-    std::cout << "Inserire l'intervallo massimo: ";
+    std::cout << "Upper limit: ";
     std::cin >> b;
-    std::cout << "Inserire il numero di divisioni: ";
-    std::cin >> divisioni;
+    std::cout << "Number of divisions: ";
+    std::cin >> divisions;
 
     std::cout << '\n';
     std::cout << "Area calcolata col metodo dei rettangoli: "
-              << area_rettangoli(divisioni, a, b, fun)  << '\n';
+              << function_area(divisions, a, b, fun)  << '\n';
 
-    std::cout << "Vuoi vedere il grafico della funzione? [Y/N]: ";
+    std::cout << "Do you want to see the function plot? [Y/N]: ";
     char res = '\0';
 
     std::cin >> res;
@@ -366,6 +360,4 @@ int main()
     {
         start_plot(fun);
     }
-
-#endif
 }
