@@ -6,7 +6,6 @@
 #include <cstring>
 #include <iosfwd>
 
-#include "expected.hpp"
 #include "common_types.h"
 
 namespace tokenizer
